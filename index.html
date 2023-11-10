@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Inicial</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="centered">
+    <h1>Bem-vindo à Detecção Facial</h1>
+    <p>Antes de iniciar, insira sua idade:</p>
+    
+    <form>
+        
+        
+        <label for="idade">Idade:</label>
+        <input type="number" id="idade" name="idade" required>
+
+        <button onclick="verificarIdade()">Iniciar</button>
+    </form>
+
+    <style>
+        form {
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+            box-shadow: none;
+            border: none;
+        }
+
+        label, input {
+            margin-bottom: 10px;
+            box-shadow: none; 
+            border-radius: 10px;
+            box-shadow: none;
+            border: none;
+        }
+    </style>
+
+    <script>
+        
+        function verificarIdade() {
+            window.location.href = "detection.html";
+            /*const idade = document.getElementById("idade").value;
+
+            if (idade < 18) {
+                alert("Você não pode iniciar devido à idade insuficiente.");
+            } else {
+                window.location.href = "detection.html";
+            }*/
+        }
+    </script>
+</body>
+</html>

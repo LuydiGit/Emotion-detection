@@ -1,0 +1,45 @@
+body {
+    background-color: #1B1B1B;
+    color: #000000;
+    font-family: 'Poppins', sans-serif; /* Defina a fonte para Poppins */
+}
+
+h1 {
+    color: #FFFF;
+    font-size: 2em;
+    font-family: 'Poppins', sans-serif; /* Defina a fonte para Poppins */
+}
+
+p {
+    color: #FFFF;
+    font-size: 1.5em;
+    font-family: 'Poppins', sans-serif; /* Defina a fonte para Poppins */
+}
+
+button {
+    background-color: #00FFD9;
+    color: #001324;
+    font-size: 1em;
+    font-family: 'Poppins', sans-serif; /* Defina a fonte para Poppins */
+    border-radius: 10px;
+    box-shadow: none;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+body.centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+body {
+    background-image: url('/imagem1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
