@@ -1,57 +1,119 @@
-const cam = document.querySelector('#video')
+const cam = document.querySelector('#video');
+let emotions = []; // Array para armazenar emoções
 
-Promise.all([ // Retorna apenas uma promisse quando todas já estiverem resolvidas
-
-    faceapi.nets.tinyFaceDetector.loadFromUri('/models'), // É igual uma detecção facial normal, porém menor e mais rapido
-    faceapi.nets.faceLandmark68Net.loadFromUri('/models'), // Pegar os pontos de referencia do sue rosto. Ex: olhos, boca, nariz, etc...
-    faceapi.nets.faceRecognitionNet.loadFromUri('/models'), // Vai permitir a api saber onde o rosto está localizado no video
-    faceapi.nets.faceExpressionNet.loadFromUri('/models') // Vai permitir a api saber suas expressões. Ex: se esta feliz, triste, com raiva, etc...
-
-]).then(startVideo)
+Promise.all([
+  faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
+  faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
+  faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
+  faceapi.nets.faceExpressionNet.loadFromUri('/models')
+]).then(startVideo);
 
 async function startVideo() {
-    const constraints = { video: true };
+  const constraints = { video: true };
 
-    try {
-        let stream = await navigator.mediaDevices.getUserMedia(constraints);
+  try {
+    let stream = await navigator.mediaDevices.getUserMedia(constraints);
 
-        cam.srcObject = stream;
-        cam.onloadedmetadata = e => {
-            cam.play();
-        }
+    cam.srcObject = stream;
+    cam.onloadedmetadata = (e) => {
+      cam.play();
+    };
+  } catch (err) {
+    console.error(err);
+  }
 
-    } catch (err) {
-        console.error(err);
-    }
+  cam.addEventListener('play', () => {
+    const canvas = faceapi.createCanvasFromMedia(cam);
+    document.body.append(canvas);
+    const displaySize = { width: cam.width, height: cam.height };
+    faceapi.matchDimensions(canvas, displaySize);
+
+    setInterval(async () => {
+      const detections = await faceapi
+        .detectAllFaces(cam, new faceapi.TinyFaceDetectorOptions())
+        .withFaceLandmarks()
+        .withFaceExpressions();
+
+      if (detections.length > 0) {
+        const emotionsData = detections[0].expressions;
+        const predominantEmotion = getPredominantEmotion(emotionsData);
+        console.log('Predominant Emotion:', predominantEmotion);
+
+        // Adicionar emoção ao array
+        emotions.push(predominantEmotion);
+      }
+
+      canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+
+      faceapi.draw.drawDetections(canvas, detections);
+      faceapi.draw.drawFaceExpressions(canvas, detections);
+    }, 100);
+  });
 }
 
-cam.addEventListener('play', () => {
+function getPredominantEmotion(expressions) {
+    // Objeto que mapeia emoções às suas pontuações
+    const emotionScores = {
+      'neutral': expressions.neutral,
+      'happy': expressions.happy,
+      'sad': expressions.sad,
+      'angry': expressions.angry,
+      'fearful': expressions.fearful,
+      'disgusted': expressions.disgusted,
+      'surprised': expressions.surprised,
+    };
+  
+    // Saída de log para as pontuações individuais
+    console.log('Pontuações de Expressões:', expressions);
+  
+    // Encontrar a emoção com a pontuação mais alta
+    let predominantEmotion = 'neutral';
+    let highestScore = 0;
+  
+    for (const emotion in expressions) {
+      if (expressions[emotion] > highestScore) {
+        highestScore = expressions[emotion];
+        predominantEmotion = emotion;
+      }
+    }
+  
+    return predominantEmotion;
+  }
+  
 
-    const canvas = faceapi.createCanvasFromMedia(video) // Criando canvas para mostrar nossos resultador
-    document.body.append(canvas) // Adicionando canvas ao body
+// Adiciona um botão para salvar emoções em um arquivo
+document.addEventListener('DOMContentLoaded', () => {
+  const saveButton = document.createElement('button');
+  saveButton.textContent = 'Salvar Emoções';
+  saveButton.addEventListener('click', saveEmotionsToFile);
+  document.body.appendChild(saveButton);
+});
 
-    const displaySize = { width: cam.width, height: cam.height } // criando tamanho do display a partir das dimenssões da nossa cam
+function saveEmotionsToFile() {
+  // Verificar se há emoções para salvar
+  if (emotions.length === 0) {
+    alert('Nenhuma emoção detectada para salvar.');
+    return;
+  }
 
-    faceapi.matchDimensions(canvas, displaySize) // Igualando as dimensões do canvas com da nossa cam
+  // Converter o array de emoções em uma string
+  const emotionsString = emotions.join('\n');
 
-    setInterval(async () => { // Intervalo para detectar os rostos a cada 100ms
-        const detections = await faceapi.detectAllFaces(
-            cam, // Primeiro parametro é nossa camera
-            new faceapi.TinyFaceDetectorOptions() // Qual tipo de biblioteca vamos usar para detectar os rostos
+  // Criar um Blob com o conteúdo da string
+  const blob = new Blob([emotionsString], { type: 'text/plain' });
 
-        )
-            .withFaceLandmarks() // Vai desenhar os pontos de marcação no rosto
-            .withFaceExpressions() // Vai determinar nossas expressões
+  // Criar um objeto URL para o Blob
+  const url = URL.createObjectURL(blob);
 
+  // Criar um link para o download
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'emoctions.txt';
 
-        const resizedDetections = faceapi.resizeResults(detections, displaySize) // Redimensionado as detecções
+  // Adicionar o link ao corpo e simular o clique
+  document.body.appendChild(a);
+  a.click();
 
-
-        canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height) // Apagando nosso canvas antes de desenhar outro
-
-        faceapi.draw.drawDetections(canvas, resizedDetections) // Desenhando decções
-        //faceapi.draw.drawFaceLandmarks(canvas, resizedDetections) // Desenhando os pontos de referencia
-        faceapi.draw.drawFaceExpressions(canvas, resizedDetections) // Desenhando expressões
-
-    }, 100);
-})
+  // Remover o link do corpo
+  document.body.removeChild(a);
+}
