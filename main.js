@@ -39,8 +39,15 @@ async function startVideo() {
         const predominantEmotion = getPredominantEmotion(emotionsData);
         console.log('Predominant Emotion:', predominantEmotion);
 
+        // Obter a data e hora atual
+        const timestamp = new Date();
+        const formattedTimestamp = `${timestamp.getHours()}:${timestamp.getMinutes()}:${timestamp.getSeconds()}`;
+
+        // Adicionar a hora à cada emoção
+        const emotionWithTimestamp = `${formattedTimestamp} - ${predominantEmotion}`;
+
         // Adicionar emoção ao array
-        emotions.push(predominantEmotion);
+        emotions.push(emotionWithTimestamp);
       }
 
       canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
@@ -52,41 +59,48 @@ async function startVideo() {
 }
 
 function getPredominantEmotion(expressions) {
-    // Objeto que mapeia emoções às suas pontuações
-    const emotionScores = {
-      'neutral': expressions.neutral,
-      'happy': expressions.happy,
-      'sad': expressions.sad,
-      'angry': expressions.angry,
-      'fearful': expressions.fearful,
-      'disgusted': expressions.disgusted,
-      'surprised': expressions.surprised,
-    };
-  
-    // Saída de log para as pontuações individuais
-    console.log('Pontuações de Expressões:', expressions);
-  
-    // Encontrar a emoção com a pontuação mais alta
-    let predominantEmotion = 'neutral';
-    let highestScore = 0;
-  
-    for (const emotion in expressions) {
-      if (expressions[emotion] > highestScore) {
-        highestScore = expressions[emotion];
-        predominantEmotion = emotion;
-      }
+  // Objeto que mapeia emoções às suas pontuações
+  const emotionScores = {
+    'neutral': expressions.neutral,
+    'happy': expressions.happy,
+    'sad': expressions.sad,
+    'angry': expressions.angry,
+    'fearful': expressions.fearful,
+    'disgusted': expressions.disgusted,
+    'surprised': expressions.surprised,
+  };
+
+  // Saída de log para as pontuações individuais
+  console.log('Pontuações de Expressões:', expressions);
+
+  // Encontrar a emoção com a pontuação mais alta
+  let predominantEmotion = 'neutral';
+  let highestScore = 0;
+
+  for (const emotion in expressions) {
+    if (expressions[emotion] > highestScore) {
+      highestScore = expressions[emotion];
+      predominantEmotion = emotion;
     }
-  
-    return predominantEmotion;
   }
-  
+
+  return predominantEmotion;
+}
 
 // Adiciona um botão para salvar emoções em um arquivo
 document.addEventListener('DOMContentLoaded', () => {
-  const saveButton = document.createElement('button');
-  saveButton.textContent = 'Salvar Emoções';
+  const saveButton = document.createElement('button2');
+  saveButton.textContent = 'Salvar Detecções de Emoções';
   saveButton.addEventListener('click', saveEmotionsToFile);
   document.body.appendChild(saveButton);
+
+  const backButton = document.createElement('button3');
+  backButton.textContent = 'Voltar para a Página Inicial';
+  backButton.addEventListener('click', () => {
+    // Redirecionar para a página index.html
+    window.location.href = 'index.html';
+  });
+  document.body.appendChild(backButton);
 });
 
 function saveEmotionsToFile() {
@@ -108,7 +122,7 @@ function saveEmotionsToFile() {
   // Criar um link para o download
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'emoctions.txt';
+  a.download = 'emotions.txt';
 
   // Adicionar o link ao corpo e simular o clique
   document.body.appendChild(a);
