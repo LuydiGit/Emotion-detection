@@ -99,7 +99,7 @@ function saveEmotionToServer(emotion) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ emotion, timestamp: new Date(), user_id }),
+    body: JSON.stringify({ emotion, timestamp: new Date() }),
   })
   .then(response => response.json())
   .then(data => {
