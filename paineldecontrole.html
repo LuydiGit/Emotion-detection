@@ -27,18 +27,58 @@
         }
     </script>
 
-        <button type="button" onclick="startDetection()">Começar Detecção</button>
-
-        <script>
-            function startDetection() {
-                // Redirecionar para a página de detecção
-                window.location.href = "detection.html";
-            }
-        </script>
-
+    <button type="button" onclick="startDetection()">Começar Detecção</button>
+    <button type="button" onclick="consultarEmotions()">Buscar Emoções</button>
 
     <script>
-        // Adicione scripts específicos do painel de controle, se necessário
+        function startDetection() {
+            // Redirecionar para a página de detecção
+            window.location.href = "detection.html";
+        }
     </script>
+
+    <script>
+        function consultarEmotions() {
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            const userid = userData.user.id;
+
+            // Enviar dados para o servidor
+            console.log(userid);
+            fetch("http://localhost:3000/consultarEmotions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ userid }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Resposta do servidor:", data);
+                if (data.success) {
+                    // Exibir os dados de emoção na página
+                    const emotionsContainer = document.getElementById("emotions-container");
+                    emotionsContainer.innerHTML = "<p>Dados de Emoção:</p>";
+
+                    // Iterar sobre o array de emoções
+                    data.emotion.forEach(emotion => {
+                        for (const key in emotion) {
+                            if (emotion.hasOwnProperty(key)) {
+                                emotionsContainer.innerHTML += `<p>${key}: ${emotion[key]}</p>`;
+                            }
+                        }
+                        emotionsContainer.innerHTML += "<hr>";  // Adiciona uma linha divisória entre os registros
+                    });
+                } else {
+                    alert("Falha na requisição");
+                }
+            })
+            .catch(error => {
+                console.error("Erro na requisição:", error);
+            });
+        }
+    </script>
+
+    <!-- Container para exibir os dados de emoção -->
+    <div id="emotions-container"></div>
 </body>
 </html>

@@ -1,5 +1,7 @@
 const cam = document.querySelector('#video');
 let emotions = [];
+const userData = JSON.parse(localStorage.getItem('userData'));
+console.log(userData.user.id);
 
 Promise.all([
   faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
@@ -90,16 +92,15 @@ function getPredominantEmotion(expressions) {
 }
 
 function saveEmotionToServer(emotion) {
-  const cat = localStorage.getItem("user");
-  console.log(cat);
-  let user_id=0;
+  //const cat = localStorage.getItem("user");
+  //console.log(cat);
 
   fetch("http://localhost:3000/saveEmotions", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ emotion, timestamp: new Date() }),
+    body: JSON.stringify({ emotion, timestamp: new Date(), user_id: userData.user.id}),
   })
   .then(response => response.json())
   .then(data => {
