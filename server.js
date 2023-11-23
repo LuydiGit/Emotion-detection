@@ -66,10 +66,10 @@ app.post("/login", (req, res) => {
 
 // Rota para salvar emoções no banco de dados
 app.post("/saveEmotions", (req, res) => {
-    const { timestamp, emotion } = req.body;
+    const { timestamp, emotion, user_id } = req.body;
   
-    const sql = "INSERT INTO emotion (timestamp, emocao) VALUES (?, ?)";
-    db.query(sql, [timestamp, emotion], (err, result) => {
+    const sql = "INSERT INTO emotion (timestamp, emocao, user_id) VALUES (?, ?, ?)";
+    db.query(sql, [timestamp, emotion, user_id], (err, result) => {
       if (err) {
         console.error("Erro na inserção no banco de dados:", err);
         res.json({ success: false });

@@ -90,12 +90,16 @@ function getPredominantEmotion(expressions) {
 }
 
 function saveEmotionToServer(emotion) {
+  const cat = localStorage.getItem("user");
+  console.log(cat);
+  let user_id=0;
+
   fetch("http://localhost:3000/saveEmotions", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ emotion, timestamp: new Date() }),
+    body: JSON.stringify({ emotion, timestamp: new Date(), user_id }),
   })
   .then(response => response.json())
   .then(data => {
