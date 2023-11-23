@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="centered">
+    <h1>Bem-vindo à Detecção Facial</h1>
+    <p>Antes de iniciar, entre com sua conta!</p>
+        
+    <form>
+        <h2>Login</h2>
+        <div class="conatainer">
+            <label for="name">Nome:</label>
+            <input type="text" id="name" name="name" required>
+        
+            <label for="password">Senha:</label>
+            <input type="password" id="password" name="password" required>
+        
+            <button type="button" onclick="submitLoginForm()">Entrar</button>
+            <p></p>
+            <a href="SignUp.html">Não tem conta? Crie uma aqui</a>
+        </div>
+    </form>
+
+    <script>
+        function submitLoginForm() {
+            const name = document.getElementById("name").value;
+            const password = document.getElementById("password").value;
+
+            // Enviar dados para o servidor
+            fetch("http://localhost:3000/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ name, password }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Resposta do servidor:", data);
+                if (data.success) {
+                    console.log(data);
+
+                    // Armazenar dados do usuário no localStorage
+                    localStorage.setItem('userData', JSON.stringify(data));
+
+                    // Redirecionar para a página após o login
+                    window.location.href = "paineldecontrole.html";
+                } else {
+                    alert("Falha no login. Verifique suas credenciais.");
+                }
+            })
+            .catch(error => {
+                console.error("Erro na requisição:", error);
+            });
+        }
+    </script>
+</body>
+</html>

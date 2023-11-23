@@ -1,0 +1,21 @@
+body {
+    background-color: white;
+    font-family: 'Poppins', sans-serif;
+    margin: 30px;
+}
+
+h1, p {
+    color: #333; /* Cor do texto, você pode ajustar conforme necessário */
+}
+
+button {
+    background-color: #00FFD9;
+    color: #001324;
+    font-size: 1em;
+    font-family: 'Poppins', sans-serif; 
+    border-radius: 10px;
+    box-shadow: none;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}

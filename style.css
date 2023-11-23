@@ -1,26 +1,26 @@
 body {
     background-color: #1B1B1B;
     color: #000000;
-    font-family: 'Poppins', sans-serif; /* Defina a fonte para Poppins */
+    font-family: 'Poppins', sans-serif; 
 }
 
 h1 {
     color: #FFFF;
     font-size: 2em;
-    font-family: 'Poppins', sans-serif; /* Defina a fonte para Poppins */
+    font-family: 'Poppins', sans-serif;
 }
 
 p {
     color: #FFFF;
     font-size: 1.5em;
-    font-family: 'Poppins', sans-serif; /* Defina a fonte para Poppins */
+    font-family: 'Poppins', sans-serif; 
 }
 
 button {
     background-color: #00FFD9;
     color: #001324;
     font-size: 1em;
-    font-family: 'Poppins', sans-serif; /* Defina a fonte para Poppins */
+    font-family: 'Poppins', sans-serif; 
     border-radius: 10px;
     box-shadow: none;
     border: none;
@@ -42,4 +42,33 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    border-radius: 10px;
+    box-shadow: none;
+    border: none;
+   
+}
+.conatainer {
+    display: flex;
+    text-align: left;
+    flex-direction: column;
+
+}
+label{
+    margin-bottom: 5px;
+}
+
+input {
+    margin-bottom: 10px;
+    box-shadow: none; 
+    border-radius: 10px;
+    box-shadow: none;
+    border: none;
+    height: 30px;
+    outline: none;
 }

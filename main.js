@@ -1,17 +1,20 @@
 const cam = document.querySelector('#video');
-let emotions = []; // Array para armazenar emoções
+let emotions = [];
 
 Promise.all([
   faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
   faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
   faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
   faceapi.nets.faceExpressionNet.loadFromUri('/models')
-]).then(startVideo);
+]).then(startVideo).catch(error => {
+  console.error('Erro ao carregar modelos:', error);
+  // Se ocorrer um erro ao carregar os modelos, envie 'sem camera' para o servidor
+  saveEmotionToServer('sem camera');
+});
 
 async function startVideo() {
-  const constraints = { video: true };
-
   try {
+    const constraints = { video: true };
     let stream = await navigator.mediaDevices.getUserMedia(constraints);
 
     cam.srcObject = stream;
@@ -19,7 +22,10 @@ async function startVideo() {
       cam.play();
     };
   } catch (err) {
-    console.error(err);
+    console.error('Erro ao acessar a câmera:', err);
+    // Se ocorrer um erro ao acessar a câmera, envie 'camera não detectada' para o servidor
+    saveEmotionToServer('camera não detectada');
+    return;
   }
 
   cam.addEventListener('play', () => {
@@ -39,15 +45,14 @@ async function startVideo() {
         const predominantEmotion = getPredominantEmotion(emotionsData);
         console.log('Predominant Emotion:', predominantEmotion);
 
-        // Obter a data e hora atual
         const timestamp = new Date();
         const formattedTimestamp = `${timestamp.getHours()}:${timestamp.getMinutes()}:${timestamp.getSeconds()}`;
 
-        // Adicionar a hora à cada emoção
         const emotionWithTimestamp = `${formattedTimestamp} - ${predominantEmotion}`;
-
-        // Adicionar emoção ao array
         emotions.push(emotionWithTimestamp);
+
+        // Send emotions data to the server
+        saveEmotionToServer(emotionWithTimestamp);
       }
 
       canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
@@ -59,7 +64,6 @@ async function startVideo() {
 }
 
 function getPredominantEmotion(expressions) {
-  // Objeto que mapeia emoções às suas pontuações
   const emotionScores = {
     'neutral': expressions.neutral,
     'happy': expressions.happy,
@@ -70,10 +74,8 @@ function getPredominantEmotion(expressions) {
     'surprised': expressions.surprised,
   };
 
-  // Saída de log para as pontuações individuais
   console.log('Pontuações de Expressões:', expressions);
 
-  // Encontrar a emoção com a pontuação mais alta
   let predominantEmotion = 'neutral';
   let highestScore = 0;
 
@@ -87,47 +89,19 @@ function getPredominantEmotion(expressions) {
   return predominantEmotion;
 }
 
-// Adiciona um botão para salvar emoções em um arquivo
-document.addEventListener('DOMContentLoaded', () => {
-  const saveButton = document.createElement('button2');
-  saveButton.textContent = 'Salvar Detecções de Emoções';
-  saveButton.addEventListener('click', saveEmotionsToFile);
-  document.body.appendChild(saveButton);
-
-  const backButton = document.createElement('button3');
-  backButton.textContent = 'Voltar para a Página Inicial';
-  backButton.addEventListener('click', () => {
-    // Redirecionar para a página index.html
-    window.location.href = 'index.html';
+function saveEmotionToServer(emotion) {
+  fetch("http://localhost:3000/saveEmotions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ emotion, timestamp: new Date() }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log("Resposta do servidor:", data);
+  })
+  .catch(error => {
+    console.error("Erro na requisição:", error);
   });
-  document.body.appendChild(backButton);
-});
-
-function saveEmotionsToFile() {
-  // Verificar se há emoções para salvar
-  if (emotions.length === 0) {
-    alert('Nenhuma emoção detectada para salvar.');
-    return;
-  }
-
-  // Converter o array de emoções em uma string
-  const emotionsString = emotions.join('\n');
-
-  // Criar um Blob com o conteúdo da string
-  const blob = new Blob([emotionsString], { type: 'text/plain' });
-
-  // Criar um objeto URL para o Blob
-  const url = URL.createObjectURL(blob);
-
-  // Criar um link para o download
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'emotions.txt';
-
-  // Adicionar o link ao corpo e simular o clique
-  document.body.appendChild(a);
-  a.click();
-
-  // Remover o link do corpo
-  document.body.removeChild(a);
 }

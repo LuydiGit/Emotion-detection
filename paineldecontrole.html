@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Controle</title>
+    <link rel="stylesheet" href="stylespainel.css">
+</head>
+<body class="centered" style="background-color: white;">
+    <h1>Bem-vindo ao Painel de Controle</h1>
+    <p>Esta é a sua área de histórico.</p>
+    
+    <script>
+        // Recuperar os dados do usuário do localStorage
+        const userData = JSON.parse(localStorage.getItem('userData'));
+
+        // Verificar se o usuário está logado
+        if (userData && userData.success) {
+            const userName = userData.user.name;
+
+            // Exibir o nome do usuário na página
+            document.write(`<p>Usuário logado: ${userName}</p>`);
+        } else {
+            // Redirecionar para a página de login se o usuário não estiver logado
+            window.location.href = "SingIn.html"; // Substitua com o nome correto do arquivo de login
+        }
+    </script>
+
+        <button type="button" onclick="startDetection()">Começar Detecção</button>
+
+        <script>
+            function startDetection() {
+                // Redirecionar para a página de detecção
+                window.location.href = "detection.html";
+            }
+        </script>
+
+
+    <script>
+        // Adicione scripts específicos do painel de controle, se necessário
+    </script>
+</body>
+</html>

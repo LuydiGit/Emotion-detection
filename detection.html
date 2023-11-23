@@ -19,8 +19,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #24759F; /* Define a cor de fundo */
-            position: relative; /* Adicionado para posicionar o botão corretamente */
+            background-color: #24759F;
+            position: relative;
         }
 
         canvas {
@@ -29,7 +29,7 @@
 
         button {
             position: absolute;
-            bottom: -50px; /* Ajuste a distância do botão para baixo conforme necessário */
+            bottom: -50px;
             left: 20%;
             transform: translateX(-50%);
             padding: 10px;
@@ -40,77 +40,20 @@
             cursor: pointer;
         }
 
-        button1 {
-            position: absolute;
-            bottom: -50px; /* Ajuste a distância do botão para baixo conforme necessário */
-            left: 40%;
-            transform: translateX(-50%);
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button2 {
-            position: absolute;
-            bottom: -50px; /* Ajuste a distância do botão para baixo conforme necessário */
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        
-        button3 {
-            position: absolute;
-            bottom: -50px; /* Ajuste a distância do botão para baixo conforme necessário */
-            left: 70%;
-            transform: translateX(-50%);
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-
         #screenshot {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(100%, 100%);
             display: none;
-            max-width: 30%; /* Adicionado para limitar a largura da imagem */
-            max-height: 30vh; /* Adicionado para limitar a altura da imagem à altura da tela visível */
+            max-width: 30%;
+            max-height: 30vh;
         }
 
     </style>
 </head>
 <body>
     <video id="video" width="720" height="560" muted></video>
-    <button onclick="captureScreenshot()">Tirar Print da Tela</button>
-    <img id="screenshot" alt="Screenshot">
 
-    <script>
-        function captureScreenshot() {
-            // Aguardar 500ms para garantir que todos os elementos sejam renderizados
-            setTimeout(function() {
-                // Capturar o screenshot sem limitar à área visível
-                html2canvas(document.documentElement, { height: document.body.scrollHeight }).then(function(canvas) {
-                    // Mostrar a imagem capturada na tela
-                    var screenshotImage = canvas.toDataURL("image/png");
-                    document.getElementById('screenshot').src = screenshotImage;
-                    document.getElementById('screenshot').style.display = 'block';
-                });
-            }, 500);
-        }
-    </script>
 </body>
 </html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="centered">
+    <h1>Bem-vindo à Detecção Facial</h1>
+    <p>Antes de iniciar, crie sua conta ;)</p>
+        
+        <form>
+            <h2>Cadastrar</h2>
+            <div class="conatainer">
+                
+                <label for="name">Nome:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="password">Senha:</label>
+                <input type="password" id="password" name="password" required>
+
+                <button type="button" onclick="submitForm()">Entrar</button>
+                <p></p>
+                <a href="SignIn.html">Já tem conta? Entre aqui</a>
+
+            </div>
+        </form>
+
+        <script>
+            function submitForm() {
+              const name = document.getElementById("name").value;
+              const email = document.getElementById("email").value;
+              const password = document.getElementById("password").value;
+          
+              fetch("http://localhost:3000/signup", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ name, email, password }),
+              })
+                .then(response => response.json())
+                .then(data => {
+                  console.log("Resposta do servidor:", data);
+                  if (data.success) {
+                    alert("Cadastro realizado com sucesso!");
+                    window.location.href = "SignIn.html";
+                  } else {
+                    alert("Erro no cadastro. Tente novamente.");
+                  }
+                })
+                .catch(error => {
+                  console.error("Erro na requisição:", error);
+                });
+            }
+          </script>
+</body>
+</html>
