@@ -58,16 +58,47 @@
                     // Exibir os dados de emoção na página
                     const emotionsContainer = document.getElementById("emotions-container");
                     emotionsContainer.innerHTML = "<p>Dados de Emoção:</p>";
-
+                    
                     // Iterar sobre o array de emoções
                     data.emotion.forEach(emotion => {
+                        // Certifique-se de que as colunas "emocao" e "timestamp" existem no objeto
+                        if (emotion.hasOwnProperty("emocao") && emotion.hasOwnProperty("timestamp")) {
+                            // Divida a string da emoção usando o caractere "-"
+                            const emotionParts = emotion["emocao"].split('-');
+
+                            // Se houver duas partes (hora e emoção)
+                            if (emotionParts.length === 2) {
+                                const horaValue = emotionParts[0].trim();
+                                const emocaoValue = emotionParts[1].trim();
+
+                                // Converte a string de timestamp para um objeto de data
+                                const timestampValue = new Date(emotion["timestamp"]);
+
+                                // Obtém o dia, mês e ano
+                                const dia = timestampValue.getDate();
+                                const mes = timestampValue.getMonth() + 1; // Os meses começam do zero, então adicionamos 1
+                                const ano = timestampValue.getFullYear();
+
+                                // Formata a data no formato desejado
+                                const formattedDate = `${dia}-${mes}-${ano}`;
+
+                                // Exibe a hora, emoção e data em parágrafos distintos
+                                emotionsContainer.innerHTML += `<p>Data: ${formattedDate}</p>`;
+                                emotionsContainer.innerHTML += `<p>Hora: ${horaValue}</p>`;
+                                emotionsContainer.innerHTML += `<p>Emoção: ${emocaoValue}</p>`;
+                                emotionsContainer.innerHTML += "<hr>";  // Adiciona uma linha divisória entre os registros
+                            }
+                        }
+                    });
+                //esse código puxa tudo 
+                    /*data.emotion.forEach(emotion => {
                         for (const key in emotion) {
                             if (emotion.hasOwnProperty(key)) {
                                 emotionsContainer.innerHTML += `<p>${key}: ${emotion[key]}</p>`;
                             }
                         }
                         emotionsContainer.innerHTML += "<hr>";  // Adiciona uma linha divisória entre os registros
-                    });
+                    });*/
                 } else {
                     alert("Falha na requisição");
                 }
