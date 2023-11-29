@@ -61,7 +61,7 @@ async function startVideo() {
 
       faceapi.draw.drawDetections(canvas, detections);
       faceapi.draw.drawFaceExpressions(canvas, detections);
-    }, 100);
+    }, 200);
   });
 }
 
