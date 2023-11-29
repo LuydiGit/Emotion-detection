@@ -16,29 +16,27 @@ Documento de visão:
 
 https://1drv.ms/w/s!AjtCtdH-bFI1q_9f9gREzmGRzjzlGw?e=0lEqxh
 
-Banco de dados MySql:
-
-Ainda vou inserir aqui ***
+Banco de dados MySql está na pasta principal com o nome emotiondetection.sql, já está povoado com alguns dados para facilitar a instalação.
 
 Projeto para detecção de emoções em tempo real.
 
 Nesse projeto é usado a api que está nesse site: https://justadudewhohacks.github.io/face-api.js/docs/index.html
 
-Para implementação de gravação de emoções em textos fiz algumas alterações:
+Para implementação são necessário no computador:
 
-1- instalei o node no computador
+1- VsCode
 
-2- instalei no projeto apenas com npm init
+2- Node Js
 
-3- instalei o nodemon
+3- Xammp
 
-4- criei o server em MySql com o xampp
+Agora siga esses passos
+1- baixe e instale no projeto apenas com npm init
 
-5- fiz o banco com duas tabelas, user e emotion
+2- instale o nodemon
 
-5.1 user: id, name, email, password
+4- criei o banco em MySql com o xampp usando o arquivo emotiondetection.sql
 
-5.2 emotion: timestamp, emocao, user_id
-6- inicio o server no terminal com nodemon server.js
+5- inicio o server no terminal com nodemon server.js
 
-7- usei a extensão Live server e inicio o projeto na página SignIn.html
+6- usei a extensão Live server e inicie o projeto na página SignIn.html
