@@ -10,7 +10,7 @@ Diagrama de banco de dados:
 
 Diagrama de componentes:
 
-![Alt text](image-1.png)
+![Alt text](image-2.png)
 
 Documento de visão:
 
@@ -37,8 +37,8 @@ Agora siga esses passos
 
 2- instale o nodemon (npm install -g nodemon)
 
-4- criei o banco em MySql com o xampp usando o arquivo emotiondetection.sql
+3- criei o banco em MySql com o xampp usando o arquivo emotiondetection.sql
 
-5- inicie o server no terminal com nodemon server.js
+4- inicie o server no terminal com nodemon server.js
 
-6- usei a extensão Live server e inicie o projeto na página SignIn.html
+5- usei a extensão Live server e inicie o projeto na página SignIn.html
