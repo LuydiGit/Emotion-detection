@@ -30,13 +30,15 @@ Para implementação são necessário no computador:
 
 3- Xammp
 
-Agora siga esses passos
-1- baixe e instale no projeto apenas com npm init
+4- Ter instalado o npm (npm install -g npm)
 
-2- instale o nodemon
+Agora siga esses passos
+1- baixe e instale no projeto apenas com (npm install)
+
+2- instale o nodemon (npm install -g nodemon)
 
 4- criei o banco em MySql com o xampp usando o arquivo emotiondetection.sql
 
-5- inicio o server no terminal com nodemon server.js
+5- inicie o server no terminal com nodemon server.js
 
 6- usei a extensão Live server e inicie o projeto na página SignIn.html
