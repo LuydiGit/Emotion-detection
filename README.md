@@ -32,7 +32,8 @@ Para implementação são necessário no computador:
 
 4- Ter instalado o npm (npm install -g npm)
 
-Agora siga esses passos
+Agora siga esses passos:
+
 1- baixe e instale no projeto apenas com (npm install)
 
 2- instale o nodemon (npm install -g nodemon)
