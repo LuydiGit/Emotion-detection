@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de paciente</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="centered">
+    <h1>Cadastro de paciente</h1>
+    <p>Insira os dados do paciente no formulário abaixo</p>
+        
+        <form>
+            <h2>Cadastrar paciente</h2>
+            <div class="conatainer">
+                
+                <label for="name">Nome:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <button type="button" onclick="submitForm()">Cadastrar</button>
+                <p></p>
+                <button type="button" onclick="controlPannel()">Retornar ao painel de controle</button>
+
+            </div>
+        </form>
+
+        <script>
+            function controlPannel() {
+                // Redirecionar para a página de cadastro de paciente
+                window.location.href = "paineldecontrole.html";
+            }
+        </script>
+
+        <script>
+            function submitForm() {
+              const name = document.getElementById("name").value;
+              const email = document.getElementById("email").value;
+          
+              fetch("http://localhost:3000/patientRegister", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ name, email}),
+              })
+                .then(response => response.json())
+                .then(data => {
+                  console.log("Resposta do servidor:", data);
+                  if (data.success) {
+                    alert("Paciente cadastrado com sucesso!");
+                    window.location.href = "patientRegister.html";
+                  } else {
+                    alert("Erro no cadastro. Tente novamente.");
+                  }
+                })
+                .catch(error => {
+                  console.error("Erro na requisição:", error);
+                });
+            }
+          </script>
+</body>
+</html>

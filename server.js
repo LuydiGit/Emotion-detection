@@ -63,6 +63,22 @@ app.post("/login", (req, res) => {
   });
 });
 
+// Rota para adicionar pacientes no banco de dados
+app.post("/patientRegister", (req, res) => {
+  const { name, email } = req.body;
+
+  const sql = "INSERT INTO patient (name, email) VALUES (?, ?)";
+  db.query(sql, [name, email], (err, result) => {
+    if (err) {
+      console.error("Erro na inserção no banco de dados:", err);
+      res.status(500).json({ success: false }); // Internal Server Error
+      return;
+    }
+    console.log("Cadastro realizado com sucesso!");
+    res.status(200).json({ success: true }); // OK
+  });
+});
+
 // Rota para consultar emoções no banco de dados
 app.post("/consultarEmotions", (req, res) => {
   const { userid } = req.body;
@@ -106,3 +122,4 @@ app.post("/saveEmotions", (req, res) => {
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
 });
+
