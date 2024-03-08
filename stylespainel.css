@@ -1,19 +1,19 @@
 body {
-    background-color: white;
+    background-color: #121214;
     font-family: 'Poppins', sans-serif;
     margin: 50px;
 }
 
 h1, p {
-    color: #333; /* Cor do texto, você pode ajustar conforme necessário */
+    color: #fff; /* Cor do texto, você pode ajustar conforme necessário */
 }
 
 button {
-    background-color: #00FFD9;
-    color: #001324;
-    font-size: 1em;
-    font-family: 'Poppins', sans-serif; 
-    border-radius: 10px;
+    background-color: #81D8F7;
+    color: #121214;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif; 
+    border-radius: 4px;
     box-shadow: none;
     border: none;
     padding: 10px 20px;
