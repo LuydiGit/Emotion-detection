@@ -1,0 +1,123 @@
+<mxfile host="app.diagrams.net" modified="2024-02-21T23:10:10.092Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36" etag="dy7f5KQ_FB7YGG4LKWIR" version="23.1.5" type="device">
+  <diagram name="Página-1" id="FbjDZjxGMdg9MNBLvfa5">
+    <mxGraphModel dx="2020" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="NY_olKimsMP66Irly-jn-1" value="pisicologo" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-280" y="285" width="140" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="NY_olKimsMP66Irly-jn-2" value="id_pisicologo" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="NY_olKimsMP66Irly-jn-1" vertex="1">
+          <mxGeometry y="30" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NY_olKimsMP66Irly-jn-3" value="nome_pisicologo" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="NY_olKimsMP66Irly-jn-1" vertex="1">
+          <mxGeometry y="60" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NY_olKimsMP66Irly-jn-4" value="email_pisicologo" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="NY_olKimsMP66Irly-jn-1" vertex="1">
+          <mxGeometry y="90" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NY_olKimsMP66Irly-jn-5" value="password_pisicologo" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="NY_olKimsMP66Irly-jn-1" vertex="1">
+          <mxGeometry y="120" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NY_olKimsMP66Irly-jn-6" value="emotion" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="480" y="315" width="140" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="NY_olKimsMP66Irly-jn-7" value="timestamp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="NY_olKimsMP66Irly-jn-6" vertex="1">
+          <mxGeometry y="30" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NY_olKimsMP66Irly-jn-8" value="emocao" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="NY_olKimsMP66Irly-jn-6" vertex="1">
+          <mxGeometry y="60" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NY_olKimsMP66Irly-jn-9" value="id_paciente" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="NY_olKimsMP66Irly-jn-6" vertex="1">
+          <mxGeometry y="90" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NY_olKimsMP66Irly-jn-12" value="paciente" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-20" y="270" width="140" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="NY_olKimsMP66Irly-jn-13" value="id_paciente" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="NY_olKimsMP66Irly-jn-12" vertex="1">
+          <mxGeometry y="30" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NY_olKimsMP66Irly-jn-14" value="nome" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="NY_olKimsMP66Irly-jn-12" vertex="1">
+          <mxGeometry y="60" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NY_olKimsMP66Irly-jn-15" value="email" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="NY_olKimsMP66Irly-jn-12" vertex="1">
+          <mxGeometry y="90" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NY_olKimsMP66Irly-jn-29" value="data_de_nascimento" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="NY_olKimsMP66Irly-jn-12" vertex="1">
+          <mxGeometry y="120" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WjajycmQ8fmsGp876FW4-2" value="id_pisicologo" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="NY_olKimsMP66Irly-jn-12">
+          <mxGeometry y="150" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NY_olKimsMP66Irly-jn-18" value="consultas" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="230" y="315" width="140" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="NY_olKimsMP66Irly-jn-19" value="id_consulta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="NY_olKimsMP66Irly-jn-18" vertex="1">
+          <mxGeometry y="30" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NY_olKimsMP66Irly-jn-24" value="id_paciente" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="NY_olKimsMP66Irly-jn-18" vertex="1">
+          <mxGeometry y="60" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NY_olKimsMP66Irly-jn-23" value="Notas" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="NY_olKimsMP66Irly-jn-18" vertex="1">
+          <mxGeometry y="90" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WjajycmQ8fmsGp876FW4-11" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERoneToMany;startArrow=ERmandOne;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1.008;exitY=0.762;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="NY_olKimsMP66Irly-jn-3" target="NY_olKimsMP66Irly-jn-15">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-110" y="205" as="sourcePoint" />
+            <mxPoint x="-55" y="555" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="-80" y="295" />
+              <mxPoint x="140" y="265" />
+              <mxPoint x="-85" y="435" />
+              <mxPoint x="-90" y="295" />
+              <mxPoint x="-100" y="465" />
+              <mxPoint x="-80" y="395" />
+              <mxPoint x="-70" y="395" />
+              <mxPoint x="-80" y="295" />
+              <mxPoint x="-85" y="285" />
+              <mxPoint x="-90" y="295" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjajycmQ8fmsGp876FW4-13" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERoneToMany;startArrow=ERmandOne;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="NY_olKimsMP66Irly-jn-14" target="NY_olKimsMP66Irly-jn-19">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="70" y="355" as="sourcePoint" />
+            <mxPoint x="139" y="522" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="129" y="442" />
+              <mxPoint x="339" y="572" />
+              <mxPoint x="349" y="412" />
+              <mxPoint x="124" y="582" />
+              <mxPoint x="119" y="442" />
+              <mxPoint x="109" y="612" />
+              <mxPoint x="129" y="542" />
+              <mxPoint x="139" y="542" />
+              <mxPoint x="129" y="442" />
+              <mxPoint x="124" y="432" />
+              <mxPoint x="119" y="442" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WjajycmQ8fmsGp876FW4-14" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERoneToMany;startArrow=ERmandOne;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="NY_olKimsMP66Irly-jn-19" target="NY_olKimsMP66Irly-jn-8">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="370" y="375" as="sourcePoint" />
+            <mxPoint x="491" y="375" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="379" y="472" />
+              <mxPoint x="589" y="602" />
+              <mxPoint x="599" y="442" />
+              <mxPoint x="374" y="612" />
+              <mxPoint x="369" y="472" />
+              <mxPoint x="359" y="642" />
+              <mxPoint x="379" y="572" />
+              <mxPoint x="389" y="572" />
+              <mxPoint x="379" y="472" />
+              <mxPoint x="374" y="462" />
+              <mxPoint x="369" y="472" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
