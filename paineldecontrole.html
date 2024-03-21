@@ -7,7 +7,6 @@
 
     <button type="button" onclick="Sair()">Sair</button>
 
-    //Exibir pacientes no painel de controle
     <script>
         function exibirPacientes() {
             fetch("http://localhost:3000/getPatients", {
@@ -65,7 +64,6 @@
         }
     </script>
 
-    <button type="button" onclick="startDetection()">Começar Detecção</button>
     <button type="button" onclick="consultarEmotions()">Buscar Emoções</button>
     <button type="button" onclick="cadastroPatient()">Cadastrar Paciente</button>
     <button type="button" onclick="exibirPacientes()">Exibir Pacientes</button>
