@@ -3,6 +3,17 @@ let emotions = [];
 const userData = JSON.parse(localStorage.getItem('userData'));
 console.log(userData.user.id);
 
+// Extrair o ID do paciente da URL
+let urlParams = new URLSearchParams(window.location.search);
+let patientId = urlParams.get('patientId'); // Asume que a URL é algo como 'detection.html?patientId=123'
+
+if (!patientId) {
+    console.error('ID do paciente não fornecido');
+    // Trate o caso em que não há um paciente selecionado
+    // Por exemplo, redirecionar de volta para a página de seleção de pacientes
+}
+
+
 Promise.all([
   faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
   faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
@@ -92,21 +103,19 @@ function getPredominantEmotion(expressions) {
 }
 
 function saveEmotionToServer(emotion) {
-  //const cat = localStorage.getItem("user");
-  //console.log(cat);
-
   fetch("http://localhost:3000/saveEmotions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ emotion, timestamp: new Date(), user_id: userData.user.id}),
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+      },
+      // Envie `patient_id` em vez de `user_id`
+      body: JSON.stringify({ emotion, timestamp: new Date(), patient_id: patientId }),
   })
   .then(response => response.json())
   .then(data => {
-    console.log("Resposta do servidor:", data);
+      console.log("Resposta do servidor:", data);
   })
   .catch(error => {
-    console.error("Erro na requisição:", error);
+      console.error("Erro na requisição:", error);
   });
 }

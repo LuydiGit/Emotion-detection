@@ -7,9 +7,37 @@
 
     <button type="button" onclick="Sair()">Sair</button>
 
+    //Exibir pacientes no painel de controle
+    <script>
+        function exibirPacientes() {
+            fetch("http://localhost:3000/getPatients", {
+                method: "GET",
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Resposta do servidor:", data);
+                if (data.success) {
+                    const patientsContainer = document.getElementById("patients-container");
+                    patientsContainer.innerHTML = "<h3>Pacientes Cadastrados:</h3><ul>";
+        
+                    data.patients.forEach(patient => {
+                        patientsContainer.innerHTML += `<li>${patient.name}, Email: ${patient.email} <button onclick='startDetection(${patient.id})'>Iniciar Detecção</button></li>`;
+                    });
+        
+                    patientsContainer.innerHTML += "</ul>";
+                } else {
+                    alert("Falha ao buscar pacientes.");
+                }
+            })
+            .catch(error => {
+                console.error("Erro na requisição:", error);
+            });
+        }
+        </script>        
+
     <script>
         function Sair() {
-            // Redirecionar para a página de detecção
+            // Redirecionar para a página de Login
             window.location.href = "SignIn.html";
         }
     </script>
@@ -40,13 +68,15 @@
     <button type="button" onclick="startDetection()">Começar Detecção</button>
     <button type="button" onclick="consultarEmotions()">Buscar Emoções</button>
     <button type="button" onclick="cadastroPatient()">Cadastrar Paciente</button>
+    <button type="button" onclick="exibirPacientes()">Exibir Pacientes</button>
 
     <script>
-        function startDetection() {
-            // Redirecionar para a página de detecção
-            window.location.href = "detection.html";
+        function startDetection(patientId) {
+            // Aqui você pode redirecionar o usuário para a página de detecção,
+            // passando o ID do paciente como parâmetro na URL, por exemplo:
+            window.location.href = `detection.html?patientId=${patientId}`;
         }
-    </script>
+        </script>        
 
     <script>
         function cadastroPatient() {
@@ -126,6 +156,8 @@
             });
         }
     </script>
+
+    <div id="patients-container"></div>
 
     <!-- Container para exibir os dados de emoção -->
     <div id="emotions-container"></div>

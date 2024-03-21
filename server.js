@@ -9,6 +9,7 @@ const port = 3000;
 
 app.use(bodyParser.json());
 
+// Conexão DB
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -24,6 +25,21 @@ db.connect((err) => {
   console.log("Conectado ao banco de dados MySQL");
 });
 
+//Requisição para puxar dados dos pacientes 
+app.get("/getPatients", (req, res) => {
+  const sql = "SELECT * FROM patient";
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error("Erro ao consultar pacientes no banco de dados:", err);
+      res.status(500).json({ success: false }); // Internal Server Error
+      return;
+    }
+    console.log("Pacientes consultados com sucesso!");
+    res.status(200).json({ success: true, patients: results }); // OK
+  });
+});
+
+//Requisição Cadastro de usuário "Piscicologo"
 app.post("/signup", (req, res) => {
   const { name, email, password } = req.body;
 
@@ -105,19 +121,20 @@ app.post("/consultarEmotions", (req, res) => {
 
 // Rota para salvar emoções no banco de dados
 app.post("/saveEmotions", (req, res) => {
-  const { timestamp, emotion, user_id } = req.body;
+  const { timestamp, emotion, patient_id } = req.body; // Use `patient_id`
 
-  const sql = "INSERT INTO emotion (timestamp, emocao, user_id) VALUES (?, ?, ?)";
-  db.query(sql, [timestamp, emotion, user_id], (err, result) => {
+  const sql = "INSERT INTO emotion (timestamp, emocao, patient_id) VALUES (?, ?, ?)";
+  db.query(sql, [timestamp, emotion, patient_id], (err, result) => {
     if (err) {
       console.error("Erro na inserção no banco de dados:", err);
-      res.status(500).json({ success: false }); // Internal Server Error
+      res.status(500).json({ success: false });
       return;
     }
     console.log("Emoção salva no banco de dados com sucesso!");
-    res.status(200).json({ success: true }); // OK
+    res.status(200).json({ success: true });
   });
 });
+
 
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
