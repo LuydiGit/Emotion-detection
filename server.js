@@ -81,10 +81,10 @@ app.post("/login", (req, res) => {
 
 // Rota para adicionar pacientes no banco de dados
 app.post("/patientRegister", (req, res) => {
-  const { name, email } = req.body;
+  const { name, email, date_of_birth } = req.body;
 
-  const sql = "INSERT INTO patient (name, email) VALUES (?, ?)";
-  db.query(sql, [name, email], (err, result) => {
+  const sql = "INSERT INTO patient (name, email, date_of_birth) VALUES (?, ?, ?)";
+  db.query(sql, [name, email, date_of_birth], (err, result) => {
     if (err) {
       console.error("Erro na inserção no banco de dados:", err);
       res.status(500).json({ success: false }); // Internal Server Error

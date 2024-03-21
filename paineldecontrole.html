@@ -20,7 +20,7 @@
                     patientsContainer.innerHTML = "<h3>Pacientes Cadastrados:</h3><ul>";
         
                     data.patients.forEach(patient => {
-                        patientsContainer.innerHTML += `<li>${patient.name}, Email: ${patient.email} <button onclick='startDetection(${patient.id})'>Iniciar Detecção</button></li>`;
+                        patientsContainer.innerHTML += `<li>${patient.name}, Email: ${patient.email}, Data de nascimento: ${patient.date_of_birth} <button onclick='startDetection(${patient.id})'>Iniciar Detecção</button></li>`;
                     });
         
                     patientsContainer.innerHTML += "</ul>";
