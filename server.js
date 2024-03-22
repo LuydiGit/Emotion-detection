@@ -135,6 +135,22 @@ app.post("/saveEmotions", (req, res) => {
   });
 });
 
+app.delete("/deletePatient/:id", (req, res) => {
+  const patientId = req.params.id;
+
+  const sql = "DELETE FROM patient WHERE id = ?";
+  db.query(sql, [patientId], (err, result) => {
+      if (err) {
+          console.error("Erro ao excluir paciente do banco de dados:", err);
+          res.status(500).json({ success: false }); // Internal Server Error
+          return;
+      }
+      console.log("Paciente excluído com sucesso!");
+      res.status(200).json({ success: true }); // OK
+  });
+});
+
+
 
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);

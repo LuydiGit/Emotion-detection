@@ -9,29 +9,51 @@
 
     <script>
         function exibirPacientes() {
-            fetch("http://localhost:3000/getPatients", {
-                method: "GET",
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log("Resposta do servidor:", data);
-                if (data.success) {
-                    const patientsContainer = document.getElementById("patients-container");
-                    patientsContainer.innerHTML = "<h3>Pacientes Cadastrados:</h3><ul>";
-        
-                    data.patients.forEach(patient => {
-                        patientsContainer.innerHTML += `<li>${patient.name}, Email: ${patient.email}, Data de nascimento: ${patient.date_of_birth} <button onclick='startDetection(${patient.id})'>Iniciar Detecção</button></li>`;
-                    });
-        
-                    patientsContainer.innerHTML += "</ul>";
-                } else {
-                    alert("Falha ao buscar pacientes.");
-                }
-            })
-            .catch(error => {
-                console.error("Erro na requisição:", error);
+    fetch("http://localhost:3000/getPatients", {
+        method: "GET",
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Resposta do servidor:", data);
+        if (data.success) {
+            const patientsContainer = document.getElementById("patients-container");
+            let tableHTML = `<h3>Pacientes Cadastrados:</h3>
+                            <table class="patients-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Email</th>
+                                        <th>Data de Nascimento</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>`;
+            
+            data.patients.forEach(patient => {
+                tableHTML += `
+                    <tr>
+                        <td>${patient.name}</td>
+                        <td>${patient.email}</td>
+                        <td>${patient.date_of_birth}</td>
+                        <td>
+                            <button class="button1" onclick='startDetection(${patient.id})'>Iniciar Detecção</button>
+                            <button class="button2" onclick='editarPaciente(${patient.id})'>Editar</button>
+                            <button class="button3" onclick='excluirPaciente(${patient.id})'>Excluir</button>
+                        </td>
+                    </tr>`;
             });
+            
+            tableHTML += `</tbody></table>`;
+            patientsContainer.innerHTML = tableHTML;
+        } else {
+            alert("Falha ao buscar pacientes.");
         }
+    })
+    .catch(error => {
+        console.error("Erro na requisição:", error);
+    });
+}
+
         </script>        
 
     <script>
@@ -40,6 +62,36 @@
             window.location.href = "SignIn.html";
         }
     </script>
+
+<script>
+    function editarPaciente(patientId) {
+        // Redirecionar para a página de edição de paciente, passando o ID do paciente como parâmetro na URL
+        window.location.href = `editarPaciente.html?patientId=${patientId}`;
+    }
+
+    function excluirPaciente(patientId) {
+        if (confirm("Tem certeza de que deseja excluir este paciente?")) {
+            // Envie uma solicitação DELETE para o servidor para excluir o paciente com o ID fornecido
+            fetch(`http://localhost:3000/deletePatient/${patientId}`, {
+                method: "DELETE",
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Resposta do servidor:", data);
+                if (data.success) {
+                    // Recarregar a lista de pacientes após a exclusão
+                    exibirPacientes();
+                } else {
+                    alert("Falha ao excluir paciente.");
+                }
+            })
+            .catch(error => {
+                console.error("Erro na requisição:", error);
+            });
+        }
+    }
+</script>
+
 
     <title>Painel de Controle</title>
     <link rel="stylesheet" href="stylespainel.css">
