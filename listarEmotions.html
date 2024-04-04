@@ -66,7 +66,7 @@
                 // Adicionar as células da tabela para a emoção, dia e hora
                 row.innerHTML = `
                     <td>${emotionName}</td>
-                    <td>${day}</td>
+                    <td data-date="${timestamp.toISOString().split('T')[0]}">${day}</td>
                     <td>${time}</td>
                 `;
 
@@ -83,18 +83,21 @@
 
         document.getElementById('date-filter').addEventListener('change', function() {
             const selectedDate = this.value;
+
+            
             const rows = document.querySelectorAll('#emotions-table tbody tr');
 
             rows.forEach(row => {
                 const dateCell = row.querySelector('td:nth-child(2)');
-                const rowDate = new Date(dateCell.textContent).toISOString().split('T')[0];
+                const rowDate = dateCell.getAttribute('data-date');
 
                 if (rowDate === selectedDate) {
                     row.style.display = '';
                 } else {
                     row.style.display = 'none';
                 }
-        });
+            });
+
 });
     </script>
 </body>

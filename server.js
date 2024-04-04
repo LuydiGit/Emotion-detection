@@ -142,8 +142,6 @@ app.post("/consultarEmotions", (req, res) => {
   });
 });
 
-
-
 // Rota para salvar emoções no banco de dados
 app.post("/saveEmotions", (req, res) => {
   const { timestamp, emotion, patient_id } = req.body; // Use `patient_id`
