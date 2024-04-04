@@ -17,7 +17,8 @@
             <thead>
                 <tr>
                     <th>Emoção</th>
-                    <th>Timestamp</th>
+                    <th>Data</th>
+                    <th>Hora</th>
                 </tr>
             </thead>
             <tbody>
@@ -52,9 +53,21 @@
             data.emotion.forEach(emotion => {
                 // Criar uma nova linha da tabela para cada emoção
                 const row = document.createElement('tr');
+
+                // Processar o timestamp para extrair o dia e a hora
+                const timestamp = new Date(emotion.timestamp);
+
+                // Dividir o texto da emoção pelo espaço e pegar apenas a primeira parte
+                const emotionName = emotion.emocao.split(' ')[2];
+
+                const day = timestamp.toLocaleDateString('pt-BR'); // Formato de data local
+                const time = timestamp.toLocaleTimeString('pt-BR'); // Formato de hora local
+
+                // Adicionar as células da tabela para a emoção, dia e hora
                 row.innerHTML = `
-                    <td>${emotion.emocao}</td>
-                    <td>${emotion.timestamp}</td>
+                    <td>${emotionName}</td>
+                    <td>${day}</td>
+                    <td>${time}</td>
                 `;
 
                 // Adicionar a linha à tabela
