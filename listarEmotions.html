@@ -10,7 +10,21 @@
 <body>
     <h1>Lista de Emoções do Paciente</h1>
     
-    <div id="emotions-container"></div>
+    <div id="emotions-container">
+        <h2>Emoções do Paciente:</h2>
+        <input type="date" id="date-filter" placeholder="Filtrar por dia">
+        <table id="emotions-table">
+            <thead>
+                <tr>
+                    <th>Emoção</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- As linhas da tabela serão adicionadas dinamicamente aqui -->
+            </tbody>
+        </table>
+    </div>
 
     <script>
         // Recuperar o ID do paciente da URL
@@ -29,14 +43,23 @@
         .then(data => {
             console.log("Resposta do servidor:", data);
             if (data.success) {
-                const emotionsContainer = document.getElementById("emotions-container");
-                emotionsContainer.innerHTML = "<h2>Emoções do Paciente:</h2>";
+                const emotionsTableBody = document.getElementById("emotions-table").querySelector("tbody");
 
-                // Iterar sobre as emoções do paciente e exibi-las na página
-                data.emotion.forEach(emotion => {
-                    // Exibir cada emoção em um parágrafo
-                    emotionsContainer.innerHTML += `<p>Emoção: ${emotion.emocao}, Timestamp: ${emotion.timestamp}</p>`;
-                });
+            // Limpar o conteúdo anterior da tabela
+            emotionsTableBody.innerHTML = '';
+
+            // Iterar sobre as emoções do paciente e exibi-las na tabela
+            data.emotion.forEach(emotion => {
+                // Criar uma nova linha da tabela para cada emoção
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${emotion.emocao}</td>
+                    <td>${emotion.timestamp}</td>
+                `;
+
+                // Adicionar a linha à tabela
+                emotionsTableBody.appendChild(row);
+        });
             } else {
                 alert("Falha ao consultar emoções do paciente.");
             }
@@ -44,6 +67,22 @@
         .catch(error => {
             console.error("Erro na requisição:", error);
         });
+
+        document.getElementById('date-filter').addEventListener('change', function() {
+            const selectedDate = this.value;
+            const rows = document.querySelectorAll('#emotions-table tbody tr');
+
+            rows.forEach(row => {
+                const dateCell = row.querySelector('td:nth-child(2)');
+                const rowDate = new Date(dateCell.textContent).toISOString().split('T')[0];
+
+                if (rowDate === selectedDate) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+        });
+});
     </script>
 </body>
 </html>

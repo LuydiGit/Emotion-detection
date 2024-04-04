@@ -91,3 +91,49 @@ input {
     color: white;
     font-size: 12px;
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-top: 20px;
+   }
+   
+   th, td {
+    border: 1px solid #eee;
+    padding: 8px;
+    text-align: left;
+    color: white;
+    background-color: black;
+   }
+   
+   th {
+    background-color: #81D8F7;
+    color: black;
+   }
+   
+   /* Removendo a cor de fundo alternada das linhas */
+   tr:nth-child(even), tr:nth-child(odd) {
+    background-color: white; /* Define a cor de fundo para branco */
+   }
+   
+   /* Estilos para o campo de filtro de data */
+   #date-filter {
+    margin-top: 20px; /* Adiciona espaço acima do campo de filtro */
+    padding: 5px; /* Adiciona padding interno */
+    font-size: 16px; /* Ajusta o tamanho da fonte */
+   }
+
+   input[type="date"] {
+    background-color: #f0f0f0; /* Cor de fundo do campo */
+    color: #333; /* Cor do texto */
+    border: 1px solid #ccc; /* Cor da borda */
+}
+
+/* Estilo para quando o campo está em foco */
+input[type="date"]:focus {
+    background-color: #fff; /* Cor de fundo quando em foco */
+    color: #000; /* Cor do texto quando em foco */
+    border-color: #007bff; /* Cor da borda quando em foco */
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25); /* Sombra para destacar o foco */
+}
