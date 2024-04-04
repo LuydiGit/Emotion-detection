@@ -95,6 +95,7 @@ app.post("/patientRegister", (req, res) => {
   });
 });
 
+/*
 // Rota para consultar emoções no banco de dados
 app.post("/consultarEmotions", (req, res) => {
   const { userid } = req.body;
@@ -118,6 +119,30 @@ app.post("/consultarEmotions", (req, res) => {
     }
   });
 });
+*/
+
+// Rota para consultar emoções no banco de dados de um paciente específico
+app.post("/consultarEmotions", (req, res) => {
+  const { patientId } = req.body;
+
+  // Consultar emoções do paciente com o ID correspondente
+  const sql = "SELECT * FROM emotion WHERE patient_id = ?";
+  db.query(sql, [patientId], (err, result) => {
+    if (err) {
+      console.error("Erro na consulta ao banco de dados:", err);
+      res.status(500).json({ success: false }); // Internal Server Error
+      return;
+    }
+
+    if (result.length > 0) {
+      res.status(200).json({ success: true, emotion: result }); // OK
+    } else {
+      res.status(404).json({ success: false }); // Not Found
+    }
+  });
+});
+
+
 
 // Rota para salvar emoções no banco de dados
 app.post("/saveEmotions", (req, res) => {

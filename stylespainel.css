@@ -81,6 +81,17 @@ button {
     font-size: 13px;
 }
 
+.button4 {
+    background-color: #37C749;
+    color: #fff;
+    margin-right: 5px;
+    padding: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
 .button1:hover, .button2:hover, .button3:hover {
     opacity: 0.8; /* Aumentei a opacidade para 0.8 para um efeito de hover mais sutil */
 }

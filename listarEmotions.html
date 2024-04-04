@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar Emoções</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Lista de Emoções do Paciente</h1>
+    
+    <div id="emotions-container"></div>
+
+    <script>
+        // Recuperar o ID do paciente da URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const patientId = urlParams.get('patientId');
+
+        // Consultar emoções do paciente com o ID correspondente
+        fetch("http://localhost:3000/consultarEmotions", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ patientId: patientId }), // Enviar o ID do paciente
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Resposta do servidor:", data);
+            if (data.success) {
+                const emotionsContainer = document.getElementById("emotions-container");
+                emotionsContainer.innerHTML = "<h2>Emoções do Paciente:</h2>";
+
+                // Iterar sobre as emoções do paciente e exibi-las na página
+                data.emotion.forEach(emotion => {
+                    // Exibir cada emoção em um parágrafo
+                    emotionsContainer.innerHTML += `<p>Emoção: ${emotion.emocao}, Timestamp: ${emotion.timestamp}</p>`;
+                });
+            } else {
+                alert("Falha ao consultar emoções do paciente.");
+            }
+        })
+        .catch(error => {
+            console.error("Erro na requisição:", error);
+        });
+    </script>
+</body>
+</html>
