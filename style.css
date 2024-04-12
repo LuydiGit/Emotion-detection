@@ -137,3 +137,52 @@ input[type="date"]:focus {
     border-color: #007bff; /* Cor da borda quando em foco */
     box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25); /* Sombra para destacar o foco */
 }
+
+/*Estilizando tabela para colocar várias sessões uma do lado da outra*/
+
+.table-container {/* Ajuste a largura máxima conforme necessário */
+    max-height: 500px; /* Ajuste a altura máxima conforme necessário */
+    overflow: auto; /* Habilita a rolagem se o conteúdo exceder o tamanho do container */
+    margin-top: 50px; /* Assegura que o container esteja no topo */
+    margin-left: 10px; /* Assegura que o container esteja alinhado à esquerda */
+     /* Adiciona um pouco de espaço dentro do container */
+    border: 1px solid #ccc; /* Adiciona uma borda para o container */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Opcional: adiciona uma sombra para estética */
+}
+
+#emotions-table {
+    width: 100%; /* Faz a tabela ocupar toda a largura do container */
+    border-collapse: collapse; /* Remove o espaço entre as bordas das células */
+}
+
+#emotions-table th, #emotions-table td {
+    border: 1px solid #ddd; /* Adiciona bordas às células da tabela */
+    padding: 8px; /* Adiciona espaço dentro das células */
+    text-align: left; /* Alinha o texto à esquerda */
+}
+
+#emotions-table th {
+    background-color: #f2f2f2; /* Cor de fundo para os cabeçalhos da tabela */
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.table-container,
+.chart-container {
+    flex: 1;
+    min-width: 300px; /* Valor mínimo para que os elementos não fiquem muito pequenos */
+    margin: 10px; /* Espaçamento entre os elementos */
+    margin-top: 50px; /* Assegura que o container esteja no topo */
+    margin-left: 10px; /* Assegura que o container esteja alinhado à esquerda */
+     /* Adiciona um pouco de espaço dentro do container */
+    border: 1px solid #ccc; /* Adiciona uma borda para o container */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Opcional: adiciona uma sombra para estética */
+}
+
+/* Remova quaisquer estilos de float ou width do seu style.css também */
+
+

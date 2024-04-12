@@ -79,6 +79,24 @@ app.post("/login", (req, res) => {
   });
 });
 
+app.get("/getPatient/:id", (req, res) => {
+  const sql = "SELECT * FROM patient WHERE id = ?";
+  db.query(sql, [req.params.id], (err, result) => {
+    if (err) {
+      console.error("Erro na consulta ao banco de dados:", err);
+      res.status(500).json({ success: false });
+      return;
+    }
+    if (result.length > 0) {
+      res.status(200).json({ success: true, patient: result[0] });
+    } else {
+      res.status(404).json({ success: false });
+    }
+  });
+});
+
+
+
 // Rota para adicionar pacientes no banco de dados
 app.post("/patientRegister", (req, res) => {
   const { name, email, date_of_birth } = req.body;

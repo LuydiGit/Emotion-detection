@@ -6,6 +6,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de paciente</title>
     <link rel="stylesheet" href="style.css">
+
+    <script>
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const patientId = urlParams.get('patientId');
+    
+            if (patientId) {
+                fetch(`http://localhost:3000/getPatient/${patientId}`, {
+                    method: 'GET'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById("name").value = data.patient.name;
+                        document.getElementById("email").value = data.patient.email;
+                        document.getElementById("date_of_birth").value = data.patient.date_of_birth;
+                        document.querySelector("h1").textContent = "Editar paciente";
+                        document.querySelector("h2").textContent = "Editar dados do paciente";
+                        
+                        // Alterar o texto e a função do botão de acordo com a operação (editar)
+                        const submitButton = document.querySelector("button[type='button']");
+                        submitButton.textContent = "Atualizar";
+                        submitButton.onclick = function() { submitForm(patientId); }; // Já definido para chamar a função correta
+                    } else {
+                        alert("Erro ao buscar dados do paciente.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro na requisição:", error);
+                });
+            } else {
+                // Configurações para cadastro de novo paciente
+                const submitButton = document.querySelector("button[type='button']");
+                submitButton.textContent = "Cadastrar";
+                submitButton.onclick = function() { submitForm(); };
+            }
+        }
+    </script>
+    
+
+
 </head>
 <body class="centered">
     <h1>Cadastro de paciente</h1>
@@ -33,38 +74,36 @@
 
         <script>
             function controlPannel() {
-                // Redirecionar para a página de cadastro de paciente
                 window.location.href = "paineldecontrole.html";
             }
-        </script>
+// O put não está sendo suportado pelo sistema
+        function submitForm(patientId = null) {
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const date_of_birth = document.getElementById("date_of_birth").value;
+        const url = patientId ? `http://localhost:3000/updatePatient/${patientId}` : "http://localhost:3000/patientRegister";
+        const method = patientId ? "PUT" : "POST";
 
-        <script>
-            function submitForm() {
-              const name = document.getElementById("name").value;
-              const email = document.getElementById("email").value;
-              const date_of_birth = document.getElementById("date_of_birth").value;
-          
-              fetch("http://localhost:3000/patientRegister", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ name, email, date_of_birth}),
-              })
-                .then(response => response.json())
-                .then(data => {
-                  console.log("Resposta do servidor:", data);
-                  if (data.success) {
-                    alert("Paciente cadastrado com sucesso!");
-                    window.location.href = "patientRegister.html";
-                  } else {
-                    alert("Erro no cadastro. Tente novamente.");
-                  }
-                })
-                .catch(error => {
-                  console.error("Erro na requisição:", error);
-                });
+        fetch(url, {
+            method: method,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ name, email, date_of_birth }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(`Paciente ${patientId ? "atualizado" : "cadastrado"} com sucesso!`);
+                window.location.href = "paineldecontrole.html"; // Redireciona para o painel após a ação
+            } else {
+                alert("Erro no cadastro. Tente novamente.");
             }
-          </script>
+        })
+        .catch(error => {
+            console.error("Erro na requisição:", error);
+        });
+    }
+        </script>
 </body>
 </html>

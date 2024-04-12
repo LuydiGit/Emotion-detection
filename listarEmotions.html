@@ -8,10 +8,12 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Lista de Emoções do Paciente</h1>
-    
+    <h2>Emoções do Paciente:</h2>
+
+    <div class="flex-container">
+    <div class="table-container">
     <div id="emotions-container">
-        <h2>Emoções do Paciente:</h2>
+        
         <input type="date" id="date-filter" placeholder="Filtrar por dia">
         <table id="emotions-table">
             <thead>
@@ -26,6 +28,59 @@
             </tbody>
         </table>
     </div>
+</div>
+
+
+<div class="chart-container">
+    <canvas id="emotionsChart"></canvas>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Seu script existente aqui
+
+    // Exemplo de dados, substitua pelo seu agrupamento real de dados
+    const dataForChart = {
+        'Feliz': 10,
+        'Triste': 5,
+        'Surpreso': 3
+    };
+
+    // Convertendo os dados para o formato esperado pelo Chart.js
+    const labels = Object.keys(dataForChart);
+    const data = Object.values(dataForChart);
+
+    const ctx = document.getElementById('emotionsChart').getContext('2d');
+    const emotionsChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Ocorrências de Emoções',
+                data: data,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
 
     <script>
         // Recuperar o ID do paciente da URL

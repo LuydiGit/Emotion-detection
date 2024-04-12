@@ -74,9 +74,10 @@
 
 <script>
     function editarPaciente(patientId) {
-        // Redirecionar para a página de edição de paciente, passando o ID do paciente como parâmetro na URL
-        window.location.href = `editarPaciente.html?patientId=${patientId}`;
-    }
+    // Redirecionar para a página de edição de paciente, passando o ID do paciente como parâmetro na URL
+    window.location.href = `patientRegister.html?patientId=${patientId}`;
+}
+
 
     function excluirPaciente(patientId) {
         if (confirm("Tem certeza de que deseja excluir este paciente?")) {
