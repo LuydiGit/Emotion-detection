@@ -96,22 +96,22 @@ app.get("/getPatient/:id", (req, res) => {
 });
 
 
-
 // Rota para adicionar pacientes no banco de dados
 app.post("/patientRegister", (req, res) => {
-  const { name, email, date_of_birth } = req.body;
+  const { name, email, date_of_birth, psychologistId } = req.body;
 
-  const sql = "INSERT INTO patient (name, email, date_of_birth) VALUES (?, ?, ?)";
-  db.query(sql, [name, email, date_of_birth], (err, result) => {
-    if (err) {
-      console.error("Erro na inserção no banco de dados:", err);
-      res.status(500).json({ success: false }); // Internal Server Error
-      return;
-    }
-    console.log("Cadastro realizado com sucesso!");
-    res.status(200).json({ success: true }); // OK
+  const sql = "INSERT INTO patient (name, email, date_of_birth, id_psychologist) VALUES (?, ?, ?, ?)";
+  db.query(sql, [name, email, date_of_birth, psychologistId], (err, result) => {
+      if (err) {
+          console.error("Erro na inserção no banco de dados:", err);
+          res.status(500).json({ success: false });
+          return;
+      }
+      console.log("Cadastro realizado com sucesso!");
+      res.status(200).json({ success: true });
   });
 });
+
 
 /*
 // Rota para consultar emoções no banco de dados
@@ -191,6 +191,21 @@ app.delete("/deletePatient/:id", (req, res) => {
   });
 });
 
+app.put("/updatePatient/:id", (req, res) => {
+  const { name, email, date_of_birth } = req.body;
+  const { id } = req.params;
+
+  const sql = "UPDATE patient SET name = ?, email = ?, date_of_birth = ? WHERE id = ?";
+  db.query(sql, [name, email, date_of_birth, id], (err, result) => {
+      if (err) {
+          console.error("Erro na atualização do banco de dados:", err);
+          res.status(500).json({ success: false });
+          return;
+      }
+      console.log("Atualização realizada com sucesso!");
+      res.status(200).json({ success: true });
+  });
+});
 
 
 app.listen(port, () => {

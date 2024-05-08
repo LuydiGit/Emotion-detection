@@ -77,33 +77,37 @@
                 window.location.href = "paineldecontrole.html";
             }
 // O put não está sendo suportado pelo sistema
-        function submitForm(patientId = null) {
-        const name = document.getElementById("name").value;
-        const email = document.getElementById("email").value;
-        const date_of_birth = document.getElementById("date_of_birth").value;
-        const url = patientId ? `http://localhost:3000/updatePatient/${patientId}` : "http://localhost:3000/patientRegister";
-        const method = patientId ? "PUT" : "POST";
+function submitForm(patientId = null) {
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const date_of_birth = document.getElementById("date_of_birth").value;
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    const psychologistId = userData.user.id;  // Assumindo que o ID está armazenado desta forma
 
-        fetch(url, {
-            method: method,
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ name, email, date_of_birth }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert(`Paciente ${patientId ? "atualizado" : "cadastrado"} com sucesso!`);
-                window.location.href = "paineldecontrole.html"; // Redireciona para o painel após a ação
-            } else {
-                alert("Erro no cadastro. Tente novamente.");
-            }
-        })
-        .catch(error => {
-            console.error("Erro na requisição:", error);
-        });
-    }
-        </script>
+    const url = patientId ? `http://localhost:3000/updatePatient/${patientId}` : "http://localhost:3000/patientRegister";
+    const method = patientId ? "PUT" : "POST";
+
+    fetch(url, {
+        method: method,
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, date_of_birth, psychologistId }),  // Inclui o ID do psicólogo
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(`Paciente ${patientId ? "atualizado" : "cadastrado"} com sucesso!`);
+            window.location.href = "paineldecontrole.html";
+        } else {
+            alert("Erro no cadastro. Tente novamente.");
+        }
+    })
+    .catch(error => {
+        console.error("Erro na requisição:", error);
+    });
+}
+
+</script>
 </body>
 </html>
