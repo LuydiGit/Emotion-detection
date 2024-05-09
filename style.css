@@ -142,7 +142,8 @@ input[type="date"]:focus {
 /*Estilizando tabela para colocar várias sessões uma do lado da outra*/
 
 .table-container {/* Ajuste a largura máxima conforme necessário */
-    max-height: 500px; /* Ajuste a altura máxima conforme necessário */
+    width: 70%; 
+    max-height: 650px; /* Ajuste a altura máxima conforme necessário */
     overflow: auto; /* Habilita a rolagem se o conteúdo exceder o tamanho do container */
     margin-top: 50px; /* Assegura que o container esteja no topo */
     margin-left: 10px; /* Assegura que o container esteja alinhado à esquerda */
@@ -172,10 +173,9 @@ input[type="date"]:focus {
     align-items: flex-start;
 }
 
-.table-container,
 .chart-container {
     flex: 1;
-    min-width: 300px; /* Valor mínimo para que os elementos não fiquem muito pequenos */
+    min-width: 500px; /* Valor mínimo para que os elementos não fiquem muito pequenos */
     margin: 10px; /* Espaçamento entre os elementos */
     margin-top: 50px; /* Assegura que o container esteja no topo */
     margin-left: 10px; /* Assegura que o container esteja alinhado à esquerda */

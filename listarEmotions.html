@@ -6,163 +6,219 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listar Emoções</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 </head>
 <body>
+    
+
     <h2>Emoções do Paciente:</h2>
 
+    <button type="button" onclick="voltar()">Voltar</button>
+    <button type="button" onclick="exportar()">Exportar</button>
+
+    <script>
+        async function exportar() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.text('Emoções do Paciente:', 10, 10);
+            doc.text('Relatório de ' + document.getElementById('start-date').value + ' até ' + document.getElementById('end-date').value, 10, 20);
+
+            const patientName = urlParams.get('patientName');
+            if (patientName) {
+                doc.text('Paciente: ' + patientName, 10, 30);
+            }
+
+            const chartImage1 = await getChartImage(document.getElementById('emotionsChart'));
+            const chartImage2 = await getChartImage(document.getElementById('emotionsTimelineChart'));
+
+            if (chartImage1) doc.addImage(chartImage1, 'JPEG', 10, 40, 180, 60);
+            if (chartImage2) doc.addImage(chartImage2, 'JPEG', 10, 110, 180, 60);
+
+            doc.save('Relatorio_' + (patientName || 'Paciente') + '.pdf');
+        }
+
+        function getChartImage(canvas) {
+            return new Promise(resolve => {
+                canvas.toBlob(blob => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(reader.result);
+                    reader.readAsDataURL(blob);
+                });
+            });
+        }
+    </script>
+
+    <script>
+        function voltar() {
+            // Redirecionar para a página de Login
+            window.location.href = "paineldecontrole.html";
+        }
+    </script>
+
+
     <div class="flex-container">
-    <div class="table-container">
-    <div id="emotions-container">
-        
-        <input type="date" id="date-filter" placeholder="Filtrar por dia">
-        <table id="emotions-table">
-            <thead>
-                <tr>
-                    <th>Emoção</th>
-                    <th>Data</th>
-                    <th>Hora</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- As linhas da tabela serão adicionadas dinamicamente aqui -->
-            </tbody>
-        </table>
+        <div class="table-container">
+            <div id="emotions-container">
+                <label for="start-date">De:</label>
+                <input type="date" id="start-date" placeholder="Início do intervalo">
+                <label for="end-date">Até:</label>
+                <input type="date" id="end-date" placeholder="Fim do intervalo">
+                <button onclick="applyDateFilter()">Filtrar</button>
+                <table id="emotions-table">
+                    <thead>
+                        <tr>
+                            <th>Emoção</th>
+                            <th>Data</th>
+                            <th>Hora</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- As linhas da tabela serão adicionadas dinamicamente aqui -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="charts">
+            <div class="chart-container">
+                <p>Ocorrência acumulada de Emoções</p>
+                <canvas id="emotionsChart"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <p>Emoções ao longo dos dias</p>
+                <canvas id="emotionsTimelineChart"></canvas>
+            </div>
+        </div>
     </div>
-</div>
 
-<div class="chart-container">
-    <p>
-        Ocorrência acumulada de Emoções 
-    </p>
-    <canvas id="emotionsChart"></canvas> <!-- Gráfico de Barras Existente -->
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const patientId = urlParams.get('patientId');
 
-<div class="chart-container">
-    <p>
-        Emoções ao longo dos dias
-    </p>
-    <canvas id="emotionsTimelineChart"></canvas> <!-- Novo Gráfico de Linhas -->
-</div>
+        let emotionCounts = {};
+        let emotionDates = {};
+        let allData = [];
+        let barChart;
+        let lineChart;
 
+        function applyDateFilter() {
+            const startDate = document.getElementById('start-date').value;
+            const endDate = document.getElementById('end-date').value;
+            updateTable(startDate, endDate);
+            updateBarChart(startDate, endDate);
+            updateLineChart(startDate, endDate);
+        }
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    // Recuperar o ID do paciente da URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const patientId = urlParams.get('patientId');
+        fetch(`http://localhost:3000/consultarEmotions`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ patientId: patientId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                allData = data.emotion;
+                applyDateFilter(); // Apply filter initially to load data
+            } else {
+                alert("Falha ao consultar emoções do paciente.");
+            }
+        })
+        .catch(error => {
+            console.error("Erro na requisição:", error);
+        });
 
-    let emotionCounts = {}; // Objeto para armazenar a contagem de cada emoção
-    let emotionDates = {}; // Objeto para armazenar emoções por data para o gráfico de linhas
-
-    fetch(`http://localhost:3000/consultarEmotions`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ patientId: patientId })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
+        function updateTable(startDate, endDate) {
             const emotionsTableBody = document.getElementById("emotions-table").querySelector("tbody");
             emotionsTableBody.innerHTML = '';
+            emotionCounts = {};
+            emotionDates = {};
 
-            data.emotion.forEach(emotion => {
+            allData.forEach(emotion => {
                 const timestamp = new Date(emotion.timestamp);
                 const emotionName = emotion.emocao.split('-')[1].trim();
-                const isoDate = timestamp.toISOString().split('T')[0]; // Data no formato YYYY-MM-DD
+                const isoDate = timestamp.toISOString().split('T')[0];
 
-                // Incrementa a contagem de emoções para o gráfico de barras
-                emotionCounts[emotionName] = (emotionCounts[emotionName] || 0) + 1;
+                if ((!startDate || new Date(isoDate) >= new Date(startDate)) && (!endDate || new Date(isoDate) <= new Date(endDate))) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${emotionName}</td><td>${timestamp.toLocaleDateString('pt-BR')}</td><td>${timestamp.toLocaleTimeString('pt-BR')}</td>`;
+                    emotionsTableBody.appendChild(row);
 
-                // Prepara dados para o gráfico de linhas
-                if (!emotionDates[isoDate]) {
-                    emotionDates[isoDate] = {};
+                    emotionCounts[emotionName] = (emotionCounts[emotionName] || 0) + 1;
+                    if (!emotionDates[isoDate]) {
+                        emotionDates[isoDate] = {};
+                    }
+                    emotionDates[isoDate][emotionName] = (emotionDates[isoDate][emotionName] || 0) + 1;
                 }
-                if (!emotionDates[isoDate][emotionName]) {
-                    emotionDates[isoDate][emotionName] = 0;
-                }
-                emotionDates[isoDate][emotionName]++;
+            });
+        }
 
-                const row = document.createElement('tr');
-                row.innerHTML = `<td>${emotionName}</td><td data-date="${isoDate}">${timestamp.toLocaleDateString('pt-BR')}</td><td>${timestamp.toLocaleTimeString('pt-BR')}</td>`;
-                emotionsTableBody.appendChild(row);
+        function updateBarChart(startDate, endDate) {
+            if (barChart) barChart.destroy(); // Destroy the existing chart before creating a new one
+            const ctxBar = document.getElementById('emotionsChart').getContext('2d');
+            barChart = new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(emotionCounts),
+                    datasets: [{
+                        label: 'Ocorrências de Emoções',
+                        data: Object.values(emotionCounts),
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateLineChart(startDate, endDate) {
+            if (lineChart) lineChart.destroy(); // Destroy the existing chart before creating a new one
+            const ctxLine = document.getElementById('emotionsTimelineChart').getContext('2d');
+            const labels = Object.keys(emotionDates).sort();
+            const datasets = Object.keys(emotionCounts).map(emotion => {
+                return {
+                    label: emotion,
+                    data: labels.map(date => (!startDate || new Date(date) >= new Date(startDate)) && (!endDate || new Date(date) <= new Date(endDate)) ? emotionDates[date][emotion] : 0),
+                    borderColor: getRandomColor(),
+                    fill: false
+                };
             });
 
-            updateBarChart();
-            updateLineChart();
-        } else {
-            alert("Falha ao consultar emoções do paciente.");
-        }
-    })
-    .catch(error => {
-        console.error("Erro na requisição:", error);
-    });
-
-    // Função para atualizar o gráfico de barras
-    function updateBarChart() {
-        const ctxBar = document.getElementById('emotionsChart').getContext('2d');
-        new Chart(ctxBar, {
-            type: 'bar',
-            data: {
-                labels: Object.keys(emotionCounts),
-                datasets: [{
-                    label: 'Ocorrências de Emoções',
-                    data: Object.values(emotionCounts),
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+            lineChart = new Chart(ctxLine, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: datasets
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
-            }
-        });
-    }
-
-    // Função para atualizar o gráfico de linhas
-    function updateLineChart() {
-        const ctxLine = document.getElementById('emotionsTimelineChart').getContext('2d');
-        const labels = Object.keys(emotionDates).sort();
-        const datasets = Object.keys(emotionCounts).map(emotion => {
-            return {
-                label: emotion,
-                data: labels.map(date => emotionDates[date][emotion] || 0),
-                borderColor: getRandomColor(),
-                fill: false
-            };
-        });
-
-        new Chart(ctxLine, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: datasets
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    }
-
-    function getRandomColor() {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
+            });
         }
-        return color;
-    }
-</script>
 
-
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+    </script>
 </body>
 </html>
