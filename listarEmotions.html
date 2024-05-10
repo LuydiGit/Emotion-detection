@@ -18,44 +18,56 @@
 
     <script>
         async function exportar() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
 
-            doc.text('Emoções do Paciente:', 10, 10);
-            doc.text('Relatório de ' + document.getElementById('start-date').value + ' até ' + document.getElementById('end-date').value, 10, 20);
+        doc.text('Emoções do Paciente:', 10, 10);
+        const offset = 12;
+        const startDate = new Date(new Date(document.getElementById('start-date').value).getTime() + offset * 60 * 60 * 1000);
+        const endDate = new Date(new Date(document.getElementById('end-date').value).getTime() + offset * 60 * 60 * 1000);
+        const formattedStartDate = startDate.toLocaleDateString('pt-BR');
+        const formattedEndDate = endDate.toLocaleDateString('pt-BR');
 
-            const patientName = urlParams.get('patientName');
-            if (patientName) {
-                doc.text('Paciente: ' + patientName, 10, 30);
-            }
+        doc.text(`Relatório de ${formattedStartDate} até ${formattedEndDate}`, 10, 20);
 
-            const chartImage1 = await getChartImage(document.getElementById('emotionsChart'));
-            const chartImage2 = await getChartImage(document.getElementById('emotionsTimelineChart'));
-
-            if (chartImage1) doc.addImage(chartImage1, 'JPEG', 10, 40, 180, 60);
-            if (chartImage2) doc.addImage(chartImage2, 'JPEG', 10, 110, 180, 60);
-
-            doc.save('Relatorio_' + (patientName || 'Paciente') + '.pdf');
+        const urlParams = new URLSearchParams(window.location.search);
+        const patientName = decodeURIComponent(urlParams.get('patientName')) || 'Paciente';
+        doc.text('Paciente: ' + patientName, 10, 30);
+    
+        let verticalPosition = 40;
+        Object.entries(emotionCounts).forEach(([emotion, count]) => {
+            doc.text(`${emotion}: ${count}`, 10, verticalPosition);
+            verticalPosition += 10;
+        });
+    
+        const chartImage1 = await getChartImage(document.getElementById('emotionsChart'));
+        const chartImage2 = await getChartImage(document.getElementById('emotionsTimelineChart'));
+    
+        if (chartImage1) doc.addImage(chartImage1, 'JPEG', 10, verticalPosition, 180, 60);
+        verticalPosition += 70;
+        if (chartImage2) doc.addImage(chartImage2, 'JPEG', 10, verticalPosition, 180, 60);
+    
+        doc.save('Relatorio_' + (patientName || 'Paciente') + '.pdf');
         }
-
-        function getChartImage(canvas) {
-            return new Promise(resolve => {
-                canvas.toBlob(blob => {
-                    const reader = new FileReader();
-                    reader.onloadend = () => resolve(reader.result);
-                    reader.readAsDataURL(blob);
-                });
+    
+        async function getChartImage(canvas) {
+            return new Promise((resolve, reject) => {
+                if (!canvas) {
+                    reject('Canvas element not found');
+                } else {
+                    const imageData = canvas.toDataURL('image/jpeg', 1.0);
+                    resolve(imageData);
+                }
             });
         }
     </script>
+    
 
     <script>
         function voltar() {
-            // Redirecionar para a página de Login
             window.location.href = "paineldecontrole.html";
         }
     </script>
-
 
     <div class="flex-container">
         <div class="table-container">
@@ -95,6 +107,15 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        const emotionColors = {
+            'happy': 'rgba(255, 205, 86, 0.2)',
+            'Tristeza': 'rgba(54, 162, 235, 0.2)',
+            'Raiva': 'rgba(255, 99, 132, 0.2)',
+            'Medo': 'rgba(0, 0, 0, 0.2)',
+            'Surpresa': 'rgba(255, 159, 64, 0.2)',
+            'Desgosto': 'rgba(75, 192, 192, 0.2)',
+        };
+
         const urlParams = new URLSearchParams(window.location.search);
         const patientId = urlParams.get('patientId');
 
@@ -158,67 +179,63 @@
         }
 
         function updateBarChart(startDate, endDate) {
-            if (barChart) barChart.destroy(); // Destroy the existing chart before creating a new one
-            const ctxBar = document.getElementById('emotionsChart').getContext('2d');
-            barChart = new Chart(ctxBar, {
-                type: 'bar',
-                data: {
-                    labels: Object.keys(emotionCounts),
-                    datasets: [{
-                        label: 'Ocorrências de Emoções',
-                        data: Object.values(emotionCounts),
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
+        if (barChart) barChart.destroy(); // Destroy the existing chart before creating a new one
+        const ctxBar = document.getElementById('emotionsChart').getContext('2d');
+        const dataset = {
+            label: 'Ocorrências de Emoções',
+            data: Object.values(emotionCounts),
+            backgroundColor: Object.keys(emotionCounts).map(emotion => emotionColors[emotion] ? emotionColors[emotion] : 'rgba(128, 128, 128, 0.2)'),
+            borderColor: Object.keys(emotionCounts).map(emotion => emotionColors[emotion] ? emotionColors[emotion].replace('0.2', '1') : 'rgba(128, 128, 128, 1)'),
+            borderWidth: 1
+        };
+
+        barChart = new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(emotionCounts),
+                datasets: [dataset]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
                     }
                 }
-            });
-        }
-
-        function updateLineChart(startDate, endDate) {
-            if (lineChart) lineChart.destroy(); // Destroy the existing chart before creating a new one
-            const ctxLine = document.getElementById('emotionsTimelineChart').getContext('2d');
-            const labels = Object.keys(emotionDates).sort();
-            const datasets = Object.keys(emotionCounts).map(emotion => {
-                return {
-                    label: emotion,
-                    data: labels.map(date => (!startDate || new Date(date) >= new Date(startDate)) && (!endDate || new Date(date) <= new Date(endDate)) ? emotionDates[date][emotion] : 0),
-                    borderColor: getRandomColor(),
-                    fill: false
-                };
-            });
-
-            lineChart = new Chart(ctxLine, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: datasets
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        }
-
-        function getRandomColor() {
-            var letters = '0123456789ABCDEF';
-            var color = '#';
-            for (var i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
             }
-            return color;
+        });
+    }
+
+
+function updateLineChart(startDate, endDate) {
+    if (lineChart) lineChart.destroy(); // Destroy the existing chart before creating a new one
+    const ctxLine = document.getElementById('emotionsTimelineChart').getContext('2d');
+    const labels = Object.keys(emotionDates).sort();
+    const datasets = Object.keys(emotionCounts).map(emotion => {
+        return {
+            label: emotion,
+            data: labels.map(date => (!startDate || new Date(date) >= new Date(startDate)) && (!endDate || new Date(date) <= new Date(endDate)) ? emotionDates[date][emotion] : 0),
+            borderColor: emotionColors[emotion] ? emotionColors[emotion] : 'rgba(128, 128, 128, 1)',
+            fill: false
+        };
+    });
+
+    lineChart = new Chart(ctxLine, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: datasets
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
         }
+    });
+}
+
+
     </script>
 </body>
 </html>

@@ -153,13 +153,15 @@ input[type="date"]:focus {
 }
 
 #emotions-table {
+    margin-top: 10px;
+    margin-right: 10px;
     width: 100%; /* Faz a tabela ocupar toda a largura do container */
     border-collapse: collapse; /* Remove o espaço entre as bordas das células */
 }
 
 #emotions-table th, #emotions-table td {
     border: 1px solid #ddd; /* Adiciona bordas às células da tabela */
-    padding: 8px; /* Adiciona espaço dentro das células */
+    padding: 10px; /* Adiciona espaço dentro das células */
     text-align: left; /* Alinha o texto à esquerda */
 }
 
@@ -182,6 +184,30 @@ input[type="date"]:focus {
      /* Adiciona um pouco de espaço dentro do container */
     border: 1px solid #ccc; /* Adiciona uma borda para o container */
     box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Opcional: adiciona uma sombra para estética */
+}
+
+input[type="date"] {
+    padding: 2px;
+    margin: 10px 0;
+}
+
+#emotions-container {
+    
+    align-items: center;
+    width: 100%;
+}
+
+#emotions-container label, 
+#emotions-container input[type="date"] {
+    margin: 5px;
+    width: 30%;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+#emotions-container button {
+    margin: 5px;
+    width: 20%; /* Garante que o width dos inputs e botões se ajuste ao conteúdo */
 }
 
 /* Remova quaisquer estilos de float ou width do seu style.css também */

@@ -37,7 +37,7 @@
                         <td>${patient.date_of_birth}</td>
                         <td>
                             <button class="button1" onclick='startDetection(${patient.id})'>Iniciar Detecção</button>
-                            <button class="button4" onclick='listarEmotions(${patient.id})'>Listar Emoções</button>
+                            <button class="button4" onclick='listarEmotions(${patient.id}, "${encodeURIComponent(patient.name)}")'>Ver relatório</button>
                             <button class="button2" onclick='editarPaciente(${patient.id})'>Editar</button>
                             <button class="button3" onclick='excluirPaciente(${patient.id})'>Excluir</button>
                         </td>
@@ -65,9 +65,8 @@
     </script>
 
     <script>
-        function listarEmotions(patientId) {
-            // Redirecionar para a página de listagem de emoções, passando o ID do paciente como parâmetro na URL
-            window.location.href = `listarEmotions.html?patientId=${patientId}`;
+        function listarEmotions(patientId, patientName) {
+            window.location.href = `listarEmotions.html?patientId=${patientId}&patientName=${patientName}`;
         }
     </script>
 
