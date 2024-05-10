@@ -15,6 +15,39 @@
 
     <button type="button" onclick="voltar()">Voltar</button>
     <button type="button" onclick="exportar()">Exportar</button>
+    <button type="button" onclick="exportarCSV()">Exportar CSV</button>
+
+
+    <script>
+
+    function exportarCSV() {
+        const table = document.getElementById('emotions-table');
+        const rows = table.querySelectorAll('tr');
+        let csv = '';
+
+        // Loop através de cada linha da tabela
+        rows.forEach((row) => {
+            const cells = row.querySelectorAll('td, th');
+            // Loop através de cada célula da linha
+            cells.forEach((cell, index) => {
+                csv += '"' + cell.textContent.trim().replace(/"/g, '""') + '"';
+                if (index < cells.length - 1) {
+                    csv += ',';
+                }
+            });
+            csv += '\n'; // Nova linha após cada linha da tabela
+        });
+
+        // Cria um link temporário para download do arquivo CSV
+        const csvFile = new Blob([csv], { type: 'text/csv' });
+        const downloadLink = document.createElement('a');
+        downloadLink.href = window.URL.createObjectURL(csvFile);
+        downloadLink.download = 'dados_emocionais.csv';
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+    </script>
 
     <script>
         async function exportar() {
