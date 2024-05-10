@@ -11,7 +11,7 @@
 <body>
     
 
-    <h2>Emoções do Paciente:</h2>
+    <h2>Relatório do paciente</h2>
 
     <button type="button" onclick="voltar()">Voltar</button>
     <button type="button" onclick="exportar()">Exportar</button>
@@ -43,9 +43,9 @@
         const chartImage1 = await getChartImage(document.getElementById('emotionsChart'));
         const chartImage2 = await getChartImage(document.getElementById('emotionsTimelineChart'));
     
-        if (chartImage1) doc.addImage(chartImage1, 'JPEG', 10, verticalPosition, 180, 60);
+        if (chartImage1) doc.addImage(chartImage1, 'JPEG', 10, verticalPosition, 130, 60);
         verticalPosition += 70;
-        if (chartImage2) doc.addImage(chartImage2, 'JPEG', 10, verticalPosition, 180, 60);
+        if (chartImage2) doc.addImage(chartImage2, 'JPEG', 10, verticalPosition, 130, 60);
     
         doc.save('Relatorio_' + (patientName || 'Paciente') + '.pdf');
         }
